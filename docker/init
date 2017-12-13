@@ -1,0 +1,11 @@
+#!/bin/bash
+# vim: set ts=4 sts=4 sw=4 et:
+
+# reconfigure httpd
+sed -i -e 's@logs/access_log@/dev/stdout@' /etc/httpd/conf/httpd.conf
+sed -i -e 's@logs/error_log@/dev/stderr@' /etc/httpd/conf/httpd.conf
+sed -i -e 's@DirectoryIndex.*$@DirectoryIndex index.html smokeping.fcgi@' /etc/httpd/conf/httpd.conf
+sed -i -e 's@DocumentRoot.*$@DocumentRoot "/usr/share/smokeping/cgi@' /etc/httpd/conf/httpd.conf
+
+# run under supervisord
+exec /usr/bin/supervisord -n -c /etc/supervisord.conf
